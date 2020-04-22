@@ -1,16 +1,35 @@
 import { Recipe } from './recipe.modal';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Ingredient } from '../shared/ingredient.modal';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
+@Injectable()
 export class RecipeService{
     recipeSelected=new EventEmitter<Recipe>();
     private recipes: Recipe[]=[
-        new Recipe('A Test Recipe','Simply a Test Recipe',
-        'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/spaghetti-puttanesca_1.jpg'),
-        new Recipe('A Test Recipe2','Simply a Second Test Recipe',
-        'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/spaghetti-puttanesca_1.jpg')
+        new Recipe('Khichdi','Tasty simple and healthy recipe',
+        'https://www.cookwithmanali.com/wp-content/uploads/2019/02/Instant-Pot-Quinoa-Khichdi.jpg',
+        [
+            new Ingredient('rice',1),
+            new Ingredient('pulses',1)
+
+        ]),
+        new Recipe('Chicken Curry','A super tasty chicken curry recipe',
+        'https://www.theflavorbender.com/wp-content/uploads/2018/02/Sri-Lankan-Chicken-Curry-The-Flavor-Bender-Featured-Image-SQ-2.jpg',
+        [
+            new Ingredient('chicken',1),
+            new Ingredient('onions',10)
+        ])
     ];
+
+    constructor(private slService:ShoppingListService){}
 
     getRecipes(){
         return this.recipes.slice();
+    }
+
+    addIngredientToShoppingList(ingredients:Ingredient[]){
+        this.slService.addIngredients(ingredients);
+
     }
 }
